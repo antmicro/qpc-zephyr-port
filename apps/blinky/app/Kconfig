@@ -1,0 +1,7 @@
+menu "Zephyr"
+source "Kconfig.zephyr"
+endmenu
+
+module = QPC
+module-str = QPC
+source "subsys/logging/Kconfig.template.log_config"
