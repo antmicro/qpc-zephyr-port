@@ -57,13 +57,6 @@ void BSP_init(int argc, char *argv[]) {
     (void)argc;
     (void)argv;
 
-    PRINTF_S("Dining Philosophers Problem example"
-           "\nQP %s\n"
-           "Press 'p' to pause\n"
-           "Press 's' to serve\n"
-           "Press ESC to quit...\n",
-           QP_versionStr);
-
     BSP_randomSeed(1234U);
 
     Q_ALLEGE(QS_INIT((argc > 1) ? argv[1] : (void *)0));
