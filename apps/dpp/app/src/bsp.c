@@ -81,7 +81,7 @@ void BSP_terminate(int16_t result) {
 }
 /*..........................................................................*/
 void BSP_displayPhilStat(uint8_t n, char const *stat) {
-    PRINTF_S("Philosopher %2d is %s\n", (int)n, stat);
+    PRINTF_S("Philosopher %d is %s\n", (int)n, stat);
 
      /* application-specific record */
     QS_BEGIN_ID(PHILO_STAT, AO_Philo[n]->prio)
