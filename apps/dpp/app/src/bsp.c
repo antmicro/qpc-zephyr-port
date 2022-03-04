@@ -109,13 +109,10 @@ void BSP_randomSeed(uint32_t seed) {
 /****************************************************************************/
 /*..........................................................................*/
 void QF_onStartup(void) {
-    QF_consoleSetup();
-    QF_setTickRate(BSP_TICKS_PER_SEC, 50); /* desired tick rate/ticker-prio */
 }
 /*..........................................................................*/
 void QF_onCleanup(void) {
     PRINTF_S("\n%s\n", "Bye! Bye!");
-    QF_consoleCleanup();
 }
 /*..........................................................................*/
 void QF_onClockTick(void) {
@@ -123,24 +120,6 @@ void QF_onClockTick(void) {
 
     QS_RX_INPUT(); /* handle the QS-RX input */
     QS_OUTPUT();   /* handle the QS output */
-
-    switch (QF_consoleGetKey()) {
-        case '\33': { /* see if the ESC key pressed */
-            BSP_terminate(0);
-            break;
-        }
-        case 'p': {
-            QF_PUBLISH(Q_NEW(QEvt, PAUSE_SIG), &l_clock_tick);
-            break;
-        }
-        case 's': {
-            QF_PUBLISH(Q_NEW(QEvt, SERVE_SIG), &l_clock_tick);
-            break;
-        }
-        default: {
-            break;
-        }
-    }
 }
 
 /*--------------------------------------------------------------------------*/

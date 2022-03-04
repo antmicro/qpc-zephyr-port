@@ -35,6 +35,14 @@
 #include "dpp.h"
 #include "bsp.h"
 
+#include <zephyr.h>
+
+#define PHILO_THREAD_STACK_SIZE                CONFIG_MAIN_STACK_SIZE
+#define TABLE_THREAD_STACK_SIZE                CONFIG_MAIN_STACK_SIZE
+
+K_THREAD_STACK_ARRAY_DEFINE(philo_stack, N_PHILO, PHILO_THREAD_STACK_SIZE);
+K_THREAD_STACK_DEFINE(table_stack, TABLE_THREAD_STACK_SIZE);
+
 Q_DEFINE_THIS_FILE
 
 /* "fudge factor" for Windows, see NOTE1 */
@@ -65,8 +73,8 @@ int main(int argc, char *argv[]) {
                       (uint_fast8_t)(n + 1), /* QP priority of the AO */
                       philoQueueSto[n],      /* event queue storage */
                       Q_DIM(philoQueueSto[n]), /* queue length [events] */
-                      (void *)0,             /* stack storage (not used) */
-                      0U,                    /* size of the stack [bytes] */
+                      (void *)philo_stack[n],
+                      PHILO_THREAD_STACK_SIZE,
                      (QEvt *)0);             /* initialization event */
     }
     Table_ctor_call(); /* call Table ctor */
@@ -74,8 +82,8 @@ int main(int argc, char *argv[]) {
                   (uint_fast8_t)(N_PHILO + 1), /* QP priority of the AO */
                   tableQueueSto,             /* event queue storage */
                   Q_DIM(tableQueueSto),      /* queue length [events] */
-                  (void *)0,                 /* stack storage (not used) */
-                  0U,                        /* size of the stack [bytes] */
+                  (void *)table_stack,
+                  TABLE_THREAD_STACK_SIZE,
                   (QEvt *)0);                /* initialization event */
 
     return QF_run(); /* run the QF application */
