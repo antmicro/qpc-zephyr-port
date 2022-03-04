@@ -21,6 +21,11 @@
 #include "safe_std.h" /* portable "safe" <stdio.h>/<string.h> facilities */
 #include <stdlib.h> /* for exit() */
 
+#include <zephyr.h>
+
+#define BLINKY_THREAD_STACK_SIZE		CONFIG_MAIN_STACK_SIZE
+K_THREAD_STACK_DEFINE(blinky_stack, BLINKY_THREAD_STACK_SIZE);
+
 Q_DEFINE_THIS_FILE
 
 enum { BSP_TICKS_PER_SEC = 100 };
@@ -82,7 +87,7 @@ int main() {
     QACTIVE_START(AO_Blinky,
                   1U, /* priority */
                   blinky_queueSto, Q_DIM(blinky_queueSto),
-                  (void *)0, 0U, /* no stack */
+                  (void *)blinky_stack, BLINKY_THREAD_STACK_SIZE,
                   (QEvt *)0);    /* no initialization event */
     return QF_run(); /* run the QF application */
 }
